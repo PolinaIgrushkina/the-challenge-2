@@ -1,12 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export const Item = ({ data }) => {
-  const { label, children } = data;
-
+export const Item = ({ label, children }) => {
   return (
-    <ul>
-      <li style={{ paddingLeft: 10 }}>{label}</li>
-      {children && children.map(item => <Item data={item} key={item.id} />)}
-    </ul>
+    <li>
+      {label}
+      {children}
+    </li>
   );
+};
+
+Item.propTypes = {
+  label: PropTypes.string.isRequired,
+  children: PropTypes.node,
 };

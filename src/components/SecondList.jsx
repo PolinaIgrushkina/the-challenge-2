@@ -1,28 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchItems } from 'redux/operations';
 import { getItems } from 'redux/selectors';
 import { Item } from './Item';
 
-export default function SecondList() {
+export default function SecondList({ data, parentId = 0 }) {
   const { items, isLoading, error } = useSelector(getItems);
 
-  const newArr = useMemo(
-    () =>
-      items.map(item => {
-        return { ...item, children: [] };
-      }),
+  const newItems = useMemo(
+    () => items.filter(item => item.parent_id === parentId),
+    // eslint-disable-next-line
     [items]
-  );
-
-  const data = useMemo(
-    () =>
-      newArr.filter(item => {
-        return !(
-          item.parent_id && newArr[item.parent_id - 1].children.push(item)
-        );
-      }),
-    [newArr]
   );
 
   const dispatch = useDispatch();
@@ -36,10 +25,16 @@ export default function SecondList() {
       {isLoading && <b>Loading tasks...</b>}
       {error && alert(error)}
       <ul>
-        {data.map(item => (
-          <Item data={item} key={item.id} />
+        {newItems.map(item => (
+          <Item key={item.id} label={item.label}>
+            <SecondList data={items} parentId={item.id} />
+          </Item>
         ))}
       </ul>
     </>
   );
 }
+
+SecondList.propTypes = {
+  parent_id: PropTypes.number,
+};
