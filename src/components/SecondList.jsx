@@ -5,13 +5,12 @@ import { fetchItems } from 'redux/operations';
 import { getItems } from 'redux/selectors';
 import { Item } from './Item';
 
-export default function SecondList({ data, parentId = 0 }) {
+export default function SecondList({ parentId = 0 }) {
   const { items, isLoading, error } = useSelector(getItems);
 
   const newItems = useMemo(
     () => items.filter(item => item.parent_id === parentId),
-    // eslint-disable-next-line
-    [items]
+    [items, parentId]
   );
 
   const dispatch = useDispatch();
@@ -27,7 +26,7 @@ export default function SecondList({ data, parentId = 0 }) {
       <ul>
         {newItems.map(item => (
           <Item key={item.id} label={item.label}>
-            <SecondList data={items} parentId={item.id} />
+            <SecondList items={items} parentId={item.id} />
           </Item>
         ))}
       </ul>

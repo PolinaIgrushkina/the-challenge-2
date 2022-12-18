@@ -4,9 +4,9 @@ import { fetchItems } from 'redux/operations';
 import { getItems } from 'redux/selectors';
 
 export default function ItemList() {
-  const { items, isLoading, error } = useSelector(getItems);
-
   const dispatch = useDispatch();
+
+  const { items, isLoading, error } = useSelector(getItems);
 
   useEffect(() => {
     dispatch(fetchItems());

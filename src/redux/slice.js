@@ -15,7 +15,7 @@ const itemsSlice = createSlice({
     [fetchItems.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
-      state.items = action.payload.data;
+      state.items = action.payload;
     },
     [fetchItems.rejected](state, action) {
       state.isLoading = false;
